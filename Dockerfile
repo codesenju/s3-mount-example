@@ -28,13 +28,16 @@ RUN dnf upgrade -y && \
     dnf clean all && \
     rm mount-s3.rpm
 
-
 RUN echo "user_allow_other" >> /etc/fuse.conf
 ##-----------------------------------------------------------##
 
-
 # Install your application dependencies
-RUN yum install -y python3.11.x86_64 nc bind-utils
+RUN yum install -y python3.11.x86_64 nc bind-utils && \
+    mkdir -p /s3 && \
+    chown nobody:nobody /s3 && \
+    chmod 755 /s3
+
+USER nobody
 WORKDIR /opt/app
 COPY wisdom.py .
 

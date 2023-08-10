@@ -2,7 +2,10 @@ version: '3'
 services:
   s3-mount:
     build: .
-    entrypoint:
-      - sh
-      - -c
-    command: "mkdir -p /s3 && mount-s3 s3-mountpoint-bucket-xyz /s3 && while true; do echo s3-mount running in the background..; sleep 10; done"
+    entrypoint: ["/bin/bash", "-c"]
+    command: ["mount-s3 s3-mountpoint-bucket-xyz /s3 && while true; do echo s3-mount running in the background..; sleep 60; done"]
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
+    devices:
+      - /dev/fuse
