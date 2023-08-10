@@ -32,13 +32,18 @@ RUN echo "user_allow_other" >> /etc/fuse.conf
 ##-----------------------------------------------------------##
 
 # Install your application dependencies
-RUN yum install -y python3.11.x86_64 nc bind-utils && \
+RUN yum install -y python3.11.x86_64 python3-pip nc bind-utils && \
     mkdir -p /s3 && \
     chown nobody:nobody /s3 && \
     chmod 755 /s3
+
+COPY requirements.txt .
+RUN pip3 install -r requirements.txt
 
 USER nobody
 WORKDIR /opt/app
 COPY wisdom.py .
 
-ENTRYPOINT [ "python", "/opt/app/wisdom.py" ]
+COPY entrypoint.sh .
+
+ENTRYPOINT [ "/bin/bash", "/opt/app/entrypoint.sh" ]

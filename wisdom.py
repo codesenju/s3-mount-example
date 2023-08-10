@@ -63,7 +63,7 @@ current_timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 # Desired format
 formatted_text = f'"{content}" - {author}'
 # Write to a file
-file_path = f'quote_{current_timestamp}.txt'
+file_path = f'/s3/quote_{current_timestamp}.txt'
 with open(file_path, 'w') as file:
     file.write(formatted_text)
 
