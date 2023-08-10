@@ -1,14 +1,15 @@
 #!/bin/bash
-
 set -e
 
+echo "Mounting s3 bucket to container..."
 mount-s3 s3-mountpoint-bucket-xyz /s3 
-ls -la /s3
-echo s3-mount running in the background...
 sleep 5
+echo ""
 
 echo "Starting Applicaiton..."
 
 python3 /opt/app/wisdom.py
+echo ""
 
+echo "List files in s3 bucket:"
 ls -la /s3
