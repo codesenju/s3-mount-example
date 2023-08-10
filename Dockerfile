@@ -1,6 +1,9 @@
 # Download and verify the RPM in this container
 FROM public.ecr.aws/amazonlinux/amazonlinux:2023 as builder
 
+###############
+## s3-mount ###
+##-----------------------------------------------------------##
 # We need the full version of GnuPG
 RUN dnf install -y --allowerasing wget gnupg2
 
@@ -25,11 +28,14 @@ RUN dnf upgrade -y && \
     dnf clean all && \
     rm mount-s3.rpm
 
-# Install you applicaiton dependencies
-RUN yum install -y python3.11.x86_64 nc bind-utils
 
-WORKDIR /opt/app
 RUN echo "user_allow_other" >> /etc/fuse.conf
+##-----------------------------------------------------------##
+
+
+# Install your application dependencies
+RUN yum install -y python3.11.x86_64 nc bind-utils
+WORKDIR /opt/app
 COPY wisdom.py .
 
 ENTRYPOINT [ "python", "/opt/app/wisdom.py" ]
